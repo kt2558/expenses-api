@@ -48,7 +48,21 @@ app.get("/total", (req, res) => {
 });
 
 // 👆 public routes above 👆
-app.use(auth());
+app.use(
+  auth({
+   secret: SESSION_SECRET,
+   authRequired: false,
+   auth0Logout: true,
+   baseURL: APP_URL,
+   // 👇 add this 👇
+   authorizationParams: {
+     response_type: "code id_token",
+     audience: "https://expenses-api",
+   },
+   // 👆 add this 👆
+  })
+);
+  
 // 👇 private routes below 👇
 
 app.get("/reports", (req, res) => {
